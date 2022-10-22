@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import TryHooks from './TryHooks';
 
 const getNumbers = () => {
@@ -24,6 +24,7 @@ const NumberBaseballHooks = () => {
   const [value, setValue] = useState('');
   const [tries, setTries] = useState([]);
   const [answer, setAnswer] = useState(getNumbers);
+  const inputRef = useRef(null);
 
   const onSubmitForm = (e) => {
     e.preventDefault();
@@ -49,6 +50,7 @@ const NumberBaseballHooks = () => {
       setValue('');
       setAnswer(getNumbers());
     }
+    inputRef.current.focus();
   };
 
   const onChangeInput = (e) => {
@@ -59,13 +61,15 @@ const NumberBaseballHooks = () => {
     <>
       <h1>{result}</h1>
       <form onSubmit={onSubmitForm}>
-        <input type='text' maxLength={4} value={value} onChange={onChangeInput} />
+        <input type='text' ref={inputRef} maxLength={4} value={value} onChange={onChangeInput} />
         <button>입력</button>
       </form>
       <div>시도: {tries.length}</div>
-      {tries.map((v, i) => (
-        <TryHooks key={v.value} TriInfo={v} />
-      ))}
+      <div>
+        {tries.map((v, i) => (
+          <TryHooks key={v.value} TriInfo={v} />
+        ))}
+      </div>
     </>
   );
 };

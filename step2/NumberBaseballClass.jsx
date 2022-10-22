@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import Try from './Try';
 
 const getNumbers = () => {
@@ -19,7 +19,7 @@ const checkInput = (input, tries) => {
   return true;
 };
 
-class NumberBaseballClass extends Component {
+class NumberBaseballClass extends PureComponent {
   state = {
     result: '',
     value: '',
@@ -51,6 +51,7 @@ class NumberBaseballClass extends Component {
       ],
       value: '',
     });
+    this.inputRef.current.focus();
     if (this.state.tries.length >= 2) {
       alert(`기회를 모두 소진하였습니다. 정답은 ${this.state.answer.join('')} 게임을 다시 시작합니다.`);
       this.setState({
@@ -58,6 +59,7 @@ class NumberBaseballClass extends Component {
         value: '',
         answer: getNumbers(),
       });
+      this.inputRef.current.focus();
       return;
     }
   };
@@ -68,18 +70,22 @@ class NumberBaseballClass extends Component {
     });
   };
 
+  inputRef = createRef();
+
   render() {
     return (
       <>
         <h1>{this.state.result}</h1>
         <form onSubmit={this.onSubmitForm}>
-          <input type='text' maxLength={4} onChange={this.onChangeInput} value={this.state.value} />
+          <input type='text' ref={this.inputRef} maxLength={4} onChange={this.onChangeInput} value={this.state.value} />
           <button>입력</button>
         </form>
         <div>시도: {this.state.tries.length}</div>
-        {this.state.tries.map((v, i) => (
-          <Try key={v.value} value={v} index={i} />
-        ))}
+        <div>
+          {this.state.tries.map((v, i) => (
+            <Try key={v.value} value={v} index={i} />
+          ))}
+        </div>
       </>
     );
   }

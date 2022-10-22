@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-const TryHooks = ({ TriInfo }) => {
+const TryHooks = memo(({ TriInfo }) => {
   return (
     <>
       <div>
@@ -8,6 +8,8 @@ const TryHooks = ({ TriInfo }) => {
       </div>
     </>
   );
-};
+});
+
+TryHooks.displayName = 'Try';
 
 export default TryHooks;
